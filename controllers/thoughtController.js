@@ -13,28 +13,19 @@ module.exports = {
     },
 
     // get one thought by id
-    getSingleThought({ params }, res) {
-        Thought.findOne({ _id: params.id })
-            .populate({
-                path: 'reactions',
-                select: '-__v'
-            })
-            .select('-__v')
-            .then(dbThoughtData => {
-                // If no thought is found, send 404
-                if (!dbThoughtData) {
-                    res.status(404).json({ message: 'No thought found with this id!' });
-                    return;
-                }
-                res.json(dbThoughtData);
+    async getSingleThought(req, res) {
+        try {
+            const thought = await Thought.findOne({ _id: req.params.id }).select('-__v');
+            if (!thought) {
+                res.status(404).json({ message: 'No thought found with this id!' });
+                return;
             }
-            )
-            .catch(err => {
-                res.sendStatus(400);
-            }
-            );
+            res.json(thought);
+        } catch (err) {
+            res.sendStatus(400);
+        }
     },
-
+    
     // createThought
     async createThought({ body }, res) {
         try {
@@ -133,9 +124,4 @@ module.exports = {
         }
     }
 };
-
-module.exports = thoughtController;
-
-
-
 
