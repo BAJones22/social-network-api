@@ -106,18 +106,18 @@ module.exports = {
     },
 
     // delete reaction
-    async deleteReaction({ params }, res) {
+    async deleteReaction(req, res) {
         try {
-            const dbThoughtData = await Thought.findOneAndUpdate(
-                { _id: params.thoughtId },
-                { $pull: { reactions: { reactionId: params.reactionId } } },
+            const thought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                { $pull: { reactions: { reactionId: req.params.reactionId } } },
                 { new: true }
             );
-            if (!dbThoughtData) {
+            if (!thought) {
                 res.status(404).json({ message: 'No thought found with this id!' });
                 return;
             }
-            res.json({ message: 'Reaction successfully deleted!' });
+            res.json(thought);
         } catch (err) {
             res.sendStatus(400);
         }
