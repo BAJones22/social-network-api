@@ -29,21 +29,22 @@ module.exports = {
     // createThought
     async createThought({ body }, res) {
         try {
-            const dbThoughtData = await Thought.create(body);
-            const dbUserData = await User.findOneAndUpdate(
+            const thought = await Thought.create(body);
+            const user = await User.findOneAndUpdate(
                 { _id: body.userId },
-                { $push: { thoughts: dbThoughtData._id } },
+                { $push: { thoughts: thought._id } },
                 { new: true }
             );
-            if (!dbUserData) {
+            if (!user) {
                 res.status(404).json({ message: 'No user found with this id!' });
                 return;
             }
-            res.json(dbThoughtData);
+            res.json(thought);
         } catch (err) {
             res.sendStatus(400);
         }
     },
+    
 
     // update thought by id
     async updateThought({ params, body }, res) {
