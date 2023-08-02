@@ -65,29 +65,28 @@ module.exports = {
     },
 
     // delete thought
-    async deleteThought({ params }, res) {
+    async deleteThought(req, res) {
         try {
-            const dbThoughtData = await Thought.findOneAndDelete({ _id: params.id });
-            if (!dbThoughtData) {
+            const thought = await Thought.findOneAndDelete({ _id: req.params.id });
+            if (!thought) {
                 res.status(404).json({ message: 'No thought found with this id!' });
                 return;
             }
-            const dbUserData = await User.findOneAndUpdate(
-                { username: dbThoughtData.username },
-                { $pull: { thoughts: params.id } },
+            const user = await User.findOneAndUpdate(
+                { username: thought.username },
+                { $pull: { thoughts: thought._id } },
                 { new: true }
             );
-            if (!dbUserData) {
+            if (!user) {
                 res.status(404).json({ message: 'No user found with this id!' });
                 return;
             }
-            res.json({ message: 'Thought successfully deleted!' });
-        }
-        catch (err) {
+            res.json(thought);
+        } catch (err) {
             res.sendStatus(400);
         }
     },
-
+    
     // add reaction
     async addReaction({ params, body }, res) {
         try {
