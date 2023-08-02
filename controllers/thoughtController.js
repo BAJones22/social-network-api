@@ -88,23 +88,22 @@ module.exports = {
     },
     
     // add reaction
-    async addReaction({ params, body }, res) {
+    async addReaction(req, res) {
         try {
-            const dbThoughtData = await Thought.findOneAndUpdate(
-                { _id: params.thoughtId },
-                { $push: { reactions: body } },
+            const thought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                { $push: { reactions: req.body } },
                 { new: true, runValidators: true }
             );
-            if (!dbThoughtData) {
+            if (!thought) {
                 res.status(404).json({ message: 'No thought found with this id!' });
                 return;
             }
-            res.json(dbThoughtData);
+            res.json(thought);
         } catch (err) {
             res.sendStatus(400);
         }
-    }
-    ,
+    },
 
     // delete reaction
     async deleteReaction({ params }, res) {
