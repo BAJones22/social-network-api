@@ -1,5 +1,8 @@
-function dateFormat(timestamp) {
-    return `${new Date(timestamp).getMonth() + 1}/${new Date(timestamp).getDate()}/${new Date(timestamp).getFullYear()}`;
+const moment = require('moment');
+
+function dateFormat(date) {
+    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
 }
 
 module.exports = dateFormat;
+
