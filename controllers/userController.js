@@ -7,14 +7,14 @@ module.exports = {
             const users = await User.find({})
                 res.json(users);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
 
     // get one user by id
     async getSingleUser(req, res) {
         try {
-            const user = await User.findOne({ _id: req.params.id })
+            const user = await User.findOne({ _id: req.params.userId })
             .populate("friends")
             .populate("thoughts");
             if (!user) {
@@ -23,7 +23,7 @@ module.exports = {
             }
             res.json(user);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
 
@@ -33,7 +33,7 @@ module.exports = {
             const user = await User.create(req.body);
             res.json(user);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
 
@@ -41,7 +41,7 @@ module.exports = {
     async updateUser(req, res) {
         try {
             const user = await User.findOneAndUpdate(
-                { _id: req.params.id },
+                { _id: req.params.userId },
                 { $set: req.body },
                 { runValidators: true, new: true }
             );
@@ -51,21 +51,21 @@ module.exports = {
             }
             res.json(user);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
 
     // deleteUser
     async deleteUser(req, res) {
         try {
-            const user = await User.findOneAndDelete({ _id: req.params.id });
+            const user = await User.findOneAndDelete({ _id: req.params.userId });
             if (!user) {
                 res.status(404).json({ message: 'No user found with this id!' });
                 return;
             }
             res.json(user);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
 
@@ -73,7 +73,7 @@ module.exports = {
     async addFriend(req, res) {
         try {
             const user = await User.findOneAndUpdate(
-                { _id: req.params.id },
+                { _id: req.params.userId },
                 { $addToSet: { friends: req.params.friendId } },
                 { new: true }
             );
@@ -83,7 +83,7 @@ module.exports = {
             }
             res.json(user);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
 
@@ -91,7 +91,7 @@ module.exports = {
     async deleteFriend(req, res) {
         try {
             const user = await User.findOneAndUpdate(
-                { _id: req.params.id },
+                { _id: req.params.userId },
                 { $pull: { friends: req.params.friendId } },
                 { new: true }
             );
@@ -101,7 +101,7 @@ module.exports = {
             }
             res.json(user);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     }
     };

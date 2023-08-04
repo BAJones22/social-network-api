@@ -8,40 +8,42 @@ module.exports = {
                
             res.json(thoughts);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
 
     // get one thought by id
     async getSingleThought(req, res) {
         try {
-            const thought = await Thought.findOne({ _id: req.params.id }).select('-__v');
+            const thought = await Thought.findOne({ _id: req.params.thoughtId });
             if (!thought) {
                 res.status(404).json({ message: 'No thought found with this id!' });
                 return;
             }
             res.json(thought);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
     
     // createThought
-    async createThought({ body }, res) {
+    async createThought(req, res) {
         try {
-            const thought = await Thought.create(body);
+            const thought = await Thought.create(req.body);
             const user = await User.findOneAndUpdate(
-                { _id: body.userId },
+                { _id: req.body.userId },
                 { $push: { thoughts: thought._id } },
                 { new: true }
             );
+            console.log(thought);
+            // console.log(user);  
             if (!user) {
-                res.status(404).json({ message: 'No user found with this id!' });
+                 res.status(404).json({ message: 'No user found with this id!' });
                 return;
             }
             res.json(thought);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
     
@@ -50,7 +52,7 @@ module.exports = {
     async updateThought(req, res) {
         try {
             const thought = await Thought.findOneAndUpdate(
-                { _id: req.params.id },
+                { _id: req.params.thoughtId },
                 { $set: req.body },
                 { runValidators: true, new: true }
             );
@@ -60,14 +62,14 @@ module.exports = {
             }
             res.json(thought);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
 
     // delete thought
     async deleteThought(req, res) {
         try {
-            const thought = await Thought.findOneAndDelete({ _id: req.params.id });
+            const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
             if (!thought) {
                 res.status(404).json({ message: 'No thought found with this id!' });
                 return;
@@ -83,7 +85,7 @@ module.exports = {
             }
             res.json(thought);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
     
@@ -101,7 +103,7 @@ module.exports = {
             }
             res.json(thought);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     },
 
@@ -119,7 +121,7 @@ module.exports = {
             }
             res.json(thought);
         } catch (err) {
-            res.sendStatus(400);
+            res.sendStatus(400).json(err);
         }
     }
 };
