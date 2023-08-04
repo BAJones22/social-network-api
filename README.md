@@ -2,10 +2,17 @@
 
 Welcome to the Social Network API project! This repository contains the implementation of a powerful and flexible API for a social network web application. This API allows users to share their thoughts, react to friends' thoughts, and manage their friend lists. Built with MongoDB for efficient data handling and Express.js for routing, this project serves as a foundational backend system for social networking platforms.
 
+## Table of Contents
+
+- [Description](#description)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+
 ## Description
 
 In the world of social networking, handling vast amounts of unstructured data is crucial. MongoDB, known for its speed and flexibility, serves as the ideal choice for such scenarios. This project showcases the construction of an API that harnesses the power of MongoDB, Express.js, and the Mongoose ODM to provide a seamless experience for users interacting with a social network platform.
-
 
 ## Features
 
@@ -14,12 +21,6 @@ In the world of social networking, handling vast amounts of unstructured data is
 - Friendships: Add and remove friends to a user's friend list
 - Efficient Data Handling: Utilize MongoDB's speed and flexibility for large amounts of unstructured data
 - API Routes: Define various API routes for users, thoughts, reactions, and friendships
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
 
 ## Installation
 
@@ -54,7 +55,7 @@ Once the server is up and running, you can use tools like Insomnia to interact w
 - DELETE /api/friendships/:userId/:friendId: Remove a friend from a user's friend list.
 
 # Walkthrough Video
-Please refer to the walkthrough video for a comprehensive demonstration of the API's functionality.
+Please refer to the [walkthrough video](https://youtu.be/L2B05BzE08o) for a comprehensive demonstration of the API's functionality.
 
 ## License
 
